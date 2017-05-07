@@ -1,5 +1,10 @@
 var Extractor = require('angular-gettext-tools').Extractor;
 
+var cleanString = function(string){
+    return string.replace(/^[/\[\]\-\*\"\'\!\.\,\ :_=]+/g, '').replace(/[/\[\]\-\*\"\'\!\.\,\ :_=]+$/, '');
+}
+
+
 module.exports = function (grunt) {
     grunt.registerMultiTask('nggettext_extract', 'Extract strings from views', function () {
         var options = this.options();
@@ -14,6 +19,15 @@ module.exports = function (grunt) {
         }
 
         this.files.forEach(function (file) {
+			var origAddString = Extractor.prototype.addString;
+			Extractor.prototype.addString = function(file, string, plural, extractedComment){
+				var cleaned = cleanString(string);
+				var cleanedPlural = '';
+				if (plural){
+					cleanedPlural = cleanString(plural);
+				}
+				return origAddString.call(this, file, cleaned, cleanedPlural, extractedComment);
+			}
             var extractor = new Extractor(options);
             var failed = false;
 
