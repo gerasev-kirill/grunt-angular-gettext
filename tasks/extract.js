@@ -20,13 +20,13 @@ module.exports = function (grunt) {
 
         this.files.forEach(function (file) {
 			var origAddString = Extractor.prototype.addString;
-			Extractor.prototype.addString = function(file, string, plural, extractedComment){
+			Extractor.prototype.addString = function(file, string, plural, extractedComment, context){
 				var cleaned = cleanString(string);
 				var cleanedPlural = '';
 				if (plural){
 					cleanedPlural = cleanString(plural);
 				}
-				return origAddString.call(this, file, cleaned, cleanedPlural, extractedComment);
+				return origAddString.call(this, file, cleaned, cleanedPlural, extractedComment, context);
 			}
             var extractor = new Extractor(options);
             var failed = false;
