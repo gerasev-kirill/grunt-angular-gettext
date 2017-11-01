@@ -17,18 +17,6 @@ module.exports = function (grunt) {
                 }
             }
         }
-        if (!options.customJSGettextFinders){
-            options.customJSGettextFinders = [{
-                isGettext: function(node){
-                    return node && node.type === 'ObjectProperty' && node.key.name == '$pageTitle';
-                },
-                getJSData: function(node){
-                    return {
-                        singular: node.value.value
-                    };
-                }
-            }]
-        }
 
         this.files.forEach(function (file) {
             var origAddString = Extractor.prototype.addString;
